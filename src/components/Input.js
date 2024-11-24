@@ -5,6 +5,7 @@ export default function Input({
   onChange,
   optionText,
   value,
+  isfixed,
 }) {
   return (
     <div className="input">
@@ -17,8 +18,10 @@ export default function Input({
           <option>{optionText}</option>
         </select>
       )}
-      {type !== "select" && !value && <input type={type} onChange={onChange} />}
-      {type !== "select" && value && (
+      {type !== "select" && !isfixed && (
+        <input type={type} onChange={onChange} />
+      )}
+      {type !== "select" && value && isfixed && (
         <input
           className="input-lose-focus"
           style={{ backgroundColor: "#ffe8cc" }}

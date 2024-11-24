@@ -1,60 +1,48 @@
-import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
 
-export default function BillSplitForm({ selectedFriendId, friendsList }) {
-  const { name, balance } = friendsList.find(
-    (friend) => friend.id === selectedFriendId
-  );
-  const [billValue, setBillValue] = useState(0);
-  const [yourExp, setYourExp] = useState(0);
-  const [payer, setPayer] = useState("You");
-
-  const handleBillValue = (e) => {
-    setBillValue(+e.target.value);
-  };
-
-  const handleYourExp = (e) => {
-    setYourExp(+e.target.value);
-  };
-
-  const handlePayer = (e) => {
-    setPayer(e.target.value);
-  };
-
-  const handleCalBalance = (e) => {
-    e.preventDefault();
-    // if (payer === "You") balance = balance + (billValue - yourExp);
-  };
+export default function BillSplitForm({
+  selectedFriendId,
+  friendsList,
+  billValue,
+  onChangeBillValue,
+  onChangeYourExp,
+  friendExpValue,
+  onChangePayer,
+  onSubmit,
+}) {
+  const { name } = friendsList.find((friend) => friend.id === selectedFriendId);
 
   return (
     <div className="bill-split-form-container">
       <h2>split a bill with {name}</h2>
-      <form className="bill-split-form" onSubmit={handleCalBalance}>
+      <form className="bill-split-form" onSubmit={onSubmit}>
         <Input
           emoji="💰"
           text="Bill value"
           type="number"
-          onChange={handleBillValue}
+          value={billValue.toString()}
+          onChange={onChangeBillValue}
         />
         <Input
           emoji="🧍‍♀️"
           text="Your expense"
           type="number"
-          onChange={handleYourExp}
+          onChange={onChangeYourExp}
         />
         <Input
           emoji="👭"
           text={`${name}'s expense`}
           type="number"
-          value={(billValue - yourExp).toString()}
+          isfixed="true"
+          value={friendExpValue}
         />
         <Input
           emoji="🤑"
           text="Who is paying the bill?"
           type="select"
           optionText={name}
-          onChange={handlePayer}
+          onChange={onChangePayer}
         />
         <Button>Split bill</Button>
       </form>
